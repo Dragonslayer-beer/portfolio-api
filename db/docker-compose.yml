@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: beer
+      POSTGRES_PASSWORD: AA@2025
+      POSTGRES_DB: postgres
+      POSTGRES_INITDB_ARGS: "--auth-host=md5 --auth-local=trust"
+    ports:
+      - 4444:5432
+    networks:
+      - mynetwork
+    volumes:
+      - ./pg_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+  mynetwork:
+    driver: bridge
