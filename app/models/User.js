@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/sequelize_connect"); // Adjust the path as necessary
 const Level = require("./Level");
 const Village = require("./Village");
-
+// const Skills = require("./Skills");
 const User = sequelize.define(
   "User",
   {
@@ -16,6 +16,7 @@ const User = sequelize.define(
       allowNull: false,
       unique: true,
     },
+
     email: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -53,7 +54,7 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: true,
     },
- 
+
     created_by: {
       type: DataTypes.BIGINT,
       allowNull: true,
@@ -63,8 +64,6 @@ const User = sequelize.define(
       allowNull: true,
       defaultValue: true,
     },
-
-
   },
   {
     tableName: "users",
@@ -76,5 +75,7 @@ const User = sequelize.define(
 User.belongsTo(Level, { foreignKey: "level_id", as: "level" });
 User.belongsTo(User, { foreignKey: "created_by", as: "created" });
 User.belongsTo(Village, { foreignKey: "villages_id", as: "village" });
+
+// User.hasMany(Skills, { foreignKey: "id", as: "skill" });
 
 module.exports = User;

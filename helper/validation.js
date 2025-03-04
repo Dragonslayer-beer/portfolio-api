@@ -4,7 +4,6 @@ const yup = require("yup");
 // =================== USERS =======================
 // ====================================================
 
-
 const ADD_USER_EMPLOYEE = yup.object().shape({
   email: yup.string().email("Invalid email format").required("Invalid email"),
   password: yup
@@ -19,15 +18,29 @@ const ADD_USER_EMPLOYEE = yup.object().shape({
 });
 
 const RESERT_PASSWORD = yup.object().shape({
-  new_password: yup
-    .string()
-    .min(6, "ລະຫັດຜ່ານ ຕ້ອງມີ 6 ໂຕຂຶ່ນໄປ")
-    .required(),
+  new_password: yup.string().min(6, "ລະຫັດຜ່ານ ຕ້ອງມີ 6 ໂຕຂຶ່ນໄປ").required(),
+});
+
+// ====================================================
+// =================== INSERT_SKILL =======================
+// ====================================================
+
+const INSERT_SKILL = yup.object().shape({
+  skills_name: yup.string().required("ກະລຸນາຕື່ມ skills_name"),
+  skills_icons: yup.string().required("ກະລຸນາຕື່ມ skills_icons"),
+  skills_link: yup.string().required("ກະລຸນາຕື່ມ skills_link"),
+});
+
+const UPDATE_SKILL = yup.object().shape({
+  id: yup.string().required("ກະລຸນາຕື່ມ id"),
+  skills_name: yup.string().required("ກະລຸນາຕື່ມ skills_name"),
+  skills_icons: yup.string().required("ກະລຸນາຕື່ມ skills_icons"),
+  skills_link: yup.string().required("ກະລຸນາຕື່ມ skills_link"),
 });
 
 module.exports = {
-
   ADD_USER_EMPLOYEE,
-  RESERT_PASSWORD
-
+  RESERT_PASSWORD,
+  INSERT_SKILL,
+  UPDATE_SKILL,
 };

@@ -23,6 +23,44 @@ router.get("/", jwt.verify, function (req, res) {
   });
 });
 
+router.get("/gets", jwt.verify, async function (req, res) {
+  const users = await User.findAll({
+    include: [
+      {
+        model: Level,
+        as: "level",
+      },
+
+      {
+        model: User,
+        as: "created",
+      },
+      {
+        model: Village,
+        as: "village",
+        include: [
+          {
+            model: District,
+            as: "district",
+            include: [
+              {
+                model: Province,
+                as: "province",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+
+  res.json({
+    status: 200,
+    message: "OK",
+    data: users,
+  });
+});
+
 router.get("/detail", jwt.verify, async function (req, res, next) {
   try {
     const users = await User.findOne({
@@ -282,6 +320,7 @@ router.post("/register", async function (req, res, next) {
       phone: phone,
       level_id: 1,
       created_at: created_date,
+      
     });
     res.status(201).json({
       status: 201,
