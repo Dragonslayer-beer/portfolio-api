@@ -1,0 +1,72 @@
+version: '3.4'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: beer
+      POSTGRES_PASSWORD: AA@2025
+      POSTGRES_DB: postgres
+      POSTGRES_INITDB_ARGS: "--auth-host=md5 --auth-local=trust"
+    ports:
+      - 4444:5432
+    networks:
+      - mynetwork
+    volumes:
+      - ./db/pg_data:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+  backend-service:
+    image: dragonslayerbeer/dragonslayer:portfolio-api
+    environment:
+      Node_ENV: Development_Version
+      HOST: 152.42.195.114
+      USERS: beer
+      PASSWORD: AA@2025
+      DATABASE: portfolio-db
+      DB_PORT: 4444
+      DIALECT: postgres
+      ENCRYPTION_KEY: 84ncX58wEUjeUUtxpRD/Kj5b3dn4OCk32SeuW+pvV5Y=
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./uploads/.:/usr/src/app/uploads/.
+
+    ports:
+      - 4000:4000
+    networks:
+      - mynetwork
+  #this nginx reverse proxy and config load balancer
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/sites-enabled/:/etc/nginx/sites-enabled/
+      # - ./nginx/modules-enabled/:/etc/nginx/modules/
+      # - ./certbot/conf:/etc/letsencrypt
+      # - ./certbot/www:/var/www/certbot
+    restart: always
+    depends_on:
+    #  - pgadmin
+     - backend-service
+    ports:
+     - 80:80
+     - 443:443
+    networks:
+     - mynetwork
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    depends_on:
+	   - nginx
+    networks:
+	    - mynetwork
+    volumes:
+	    - ./certbot/conf:/etc/letsencrypt
+	    - ./certbot/www:/var/www/certbot
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email aphisit.inthongxay@gmail.com -d portfolio-test.archiineergroup.la --agree-tos
+networks:
+  mynetwork:
+    driver: bridge
