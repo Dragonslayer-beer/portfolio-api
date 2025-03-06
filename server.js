@@ -44,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/public', express.static(path.resolve(__dirname + '/public')));
 
 
-app.use("/images", express.static(path.join(__dirname, "./uploaded")))
+app.use("/images", express.static(path.join(__dirname, "./uploads")))
 
 
 
@@ -52,8 +52,13 @@ app.use("/images", express.static(path.join(__dirname, "./uploaded")))
 const public_router = require('./routes/public');
 app.use('/', public_router)
 
+
+
 const api_router = require('./routes/api');
 app.use('/api', api_router)
+
+const publicRouter = require('./routes/public');
+app.use('/public', publicRouter)
 
 
 app.use((err, req, res, next) => {

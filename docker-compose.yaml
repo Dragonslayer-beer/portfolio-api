@@ -31,7 +31,9 @@ services:
       context: .
       dockerfile: ./Dockerfile
     volumes:
-      - ./uploads/.:/usr/src/app/uploads/.
+      - ./uploads/profile/.:/usr/src/app/uploads/profile/.
+      - ./uploads/certification/.:/usr/src/app/uploads/certification/.
+      - ./uploads/project/.:/usr/src/app/uploads/project/.
 
     ports:
       - 4000:4000
@@ -49,23 +51,23 @@ services:
       # - ./certbot/www:/var/www/certbot
     restart: always
     depends_on:
-    #  - pgadmin
-     - backend-service
+      #  - pgadmin
+      - backend-service
     ports:
-     - 80:80
-     - 443:443
+      - 80:80
+      - 443:443
     networks:
-     - mynetwork
+      - mynetwork
   certbot:
     image: certbot/certbot
     container_name: certbot
     depends_on:
-	   - nginx
+      - nginx
     networks:
-	    - mynetwork
+      - mynetwork
     volumes:
-	    - ./certbot/conf:/etc/letsencrypt
-	    - ./certbot/www:/var/www/certbot
+      - ./certbot/conf:/etc/letsencrypt
+      - ./certbot/www:/var/www/certbot
     command: certonly --webroot -w /var/www/certbot --force-renewal --email aphisit.inthongxay@gmail.com -d portfolio-test.archiineergroup.la --agree-tos
 networks:
   mynetwork:

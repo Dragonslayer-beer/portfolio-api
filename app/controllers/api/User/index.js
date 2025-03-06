@@ -21,7 +21,7 @@ router.post("/register/general", async function (req, res, next) {
       const { email, username, password, phone, fullname, villages_id, dob } =
         req.body;
 
-      const newdob = moment(dob, "YYYY-MM-DD").format("YYYY-MM-DD");
+      // const newdob = moment(dob, "YYYY-MM-DD").format("YYYY-MM-DD");
       const created_date = moment().format("YYYY-MM-DD H:m:s");
 
       const hashedPassword = await bcrypt.hash(password, 8);
@@ -36,7 +36,7 @@ router.post("/register/general", async function (req, res, next) {
         created_by: res.locals.id,
         level_id: 2,
         villages_id: villages_id,
-        dob: newdob,
+        dob: dob,
       });
 
       res.status(201).json({
@@ -74,7 +74,7 @@ router.patch(
         );
 
         if (res.locals.profile_img) {
-          RemoveFile(`./uploaded/profile/${res.locals.profile_img}`, (err) => {
+          RemoveFile(`./uploads/profile/${res.locals.profile_img}`, (err) => {
             if (err) {
               console.log("Failed to remove file");
             }

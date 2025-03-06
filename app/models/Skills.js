@@ -6,10 +6,9 @@ const Skill = sequelize.define(
   "skills",
   {
     skills_id: {
-      type: DataTypes.BIGINT,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true,
-      allowNull: false,
+      autoIncrement: true
     },
     skills_name: {
       type: DataTypes.STRING,
@@ -35,6 +34,15 @@ const Skill = sequelize.define(
       type: DataTypes.BOOLEAN,
       allowNull: true,
       defaultValue: true,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: DataTypes.NOW,
+    },
+    deleted_at: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
   },
   {

@@ -28,14 +28,78 @@ const RESERT_PASSWORD = yup.object().shape({
 const INSERT_SKILL = yup.object().shape({
   skills_name: yup.string().required("ກະລຸນາຕື່ມ skills_name"),
   skills_icons: yup.string().required("ກະລຸນາຕື່ມ skills_icons"),
-  skills_link: yup.string().required("ກະລຸນາຕື່ມ skills_link"),
+  // skills_link: yup.string().required("ກະລຸນາຕື່ມ skills_link"),
 });
 
 const UPDATE_SKILL = yup.object().shape({
   id: yup.string().required("ກະລຸນາຕື່ມ id"),
   skills_name: yup.string().required("ກະລຸນາຕື່ມ skills_name"),
   skills_icons: yup.string().required("ກະລຸນາຕື່ມ skills_icons"),
-  skills_link: yup.string().required("ກະລຸນາຕື່ມ skills_link"),
+  // skills_link: yup.string().required("ກະລຸນາຕື່ມ skills_link"),
+});
+
+// ====================================================
+// =================== Project =======================
+// ====================================================
+
+const INSERT_PROJECT = yup.object().shape({
+  // projects_id: yup.string().required("ກະລຸນາຕື່ມ projects_id"),
+  projects_name: yup.string().required("ກະລຸນາຕື່ມ projects_name"),
+  projects_dec: yup.string().required("ກະລຸນາຕື່ມ projects_dec"),
+  projects_img: yup.string().required("ກະລຸນາຕື່ມ projects_img"),
+  user_id: yup.string().required("ກະລຸນາຕື່ມ user_id"),
+  // projects_link: yup.string().required("ກະລຸນາຕື່ມ projects_link"),
+  skill: yup
+    .array()
+    .of(
+      yup.object().shape({
+        skills_id: yup.string().required("ກະລຸນາຕື່ມ skills_id"),
+      })
+    )
+    .required("ກະລຸນາຕື່ມ skills"),
+});
+
+const UPDATE_PROJECT_SKILL = yup.object().shape({
+ projects_id: yup.string().required("ກະລຸນາຕື່ມ projects_id"),
+ projects_name: yup.string().required("ກະລຸນາຕື່ມ projects_name"),
+ projects_dec: yup.string().required("ກະລຸນາຕື່ມ projects_dec"),
+ projects_img: yup.string().required("ກະລຸນາຕື່ມ projects_img"),
+ user_id: yup.string().required("ກະລຸນາຕື່ມ user_id"),
+//  projects_link: yup.string().required("ກະລຸນາຕື່ມ projects_link"),
+ skill: yup
+   .array()
+   .of(
+     yup.object().shape({
+       skills_id: yup.string().required("ກະລຸນາຕື່ມ skills_id"),
+     })
+   )
+   .required("ກະລຸນາຕື່ມ skills"),
+});
+
+
+
+// ====================================================
+// =================== Certification =======================
+// ====================================================
+
+const INSERT_CERTIFICATION = yup.object().shape({
+  // certification_id: yup.string().required("ກະລຸນາຕື່ມ certification_id"),
+  certification_name: yup.string().required("ກະລຸນາຕື່ມ certification_name"),
+  certification_dec: yup.string().required("ກະລຸນາຕື່ມ certification_dec"),
+  date: yup.string().required("ກະລຸນາຕື່ມ date"),
+  certification_img: yup.string().required("ກະລຸນາຕື່ມ certification_img"),
+  // certification_link: yup.string().required("ກະລຸນາຕື່ມ projects_link"),
+  user_id: yup.string().required("ກະລຸນາຕື່ມ user_id"),
+});
+
+const UPDATE_CERTIFICATION = yup.object().shape({
+  certification_id: yup.string().required("ກະລຸນາຕື່ມ certification_id"),
+  certification_name: yup.string().required("ກະລຸນາຕື່ມ certification_name"),
+  certification_dec: yup.string().required("ກະລຸນາຕື່ມ certification_dec"),
+  date: yup.string().required("ກະລຸນາຕື່ມ date"),
+  certification_img: yup.string().required("ກະລຸນາຕື່ມ certification_img"),
+  // certification_link: yup.string().required("ກະລຸນາຕື່ມ projects_link"),
+  user_id: yup.string().required("ກະລຸນາຕື່ມ user_id"),
 });
 
 module.exports = {
@@ -43,4 +107,8 @@ module.exports = {
   RESERT_PASSWORD,
   INSERT_SKILL,
   UPDATE_SKILL,
+  INSERT_PROJECT,
+  UPDATE_PROJECT_SKILL,
+  INSERT_CERTIFICATION,
+  UPDATE_CERTIFICATION
 };

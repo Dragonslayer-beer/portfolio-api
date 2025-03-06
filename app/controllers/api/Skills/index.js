@@ -6,6 +6,7 @@ const sequelize = require("../../../../config/sequelize_connect");
 const { QueryTypes, Sequelize } = require("sequelize");
 const User = require("../../../models/User");
 const { INSERT_SKILL, UPDATE_SKILL } = require("../../../../helper/validation");
+const Encryption = require("../../../functions/Encryption");
 
 router.post("/insert", async function (req, res, next) {
   try {
@@ -20,7 +21,7 @@ router.post("/insert", async function (req, res, next) {
 
       if (users) {
         await INSERT_SKILL.validate(req.body);
-        console.log(Sequelize.literal("now()"));
+  
         const NewRules = await Skills.create({
           skills_name: skills_name,
           skills_icons: skills_icons,
@@ -107,7 +108,6 @@ router.delete("/delete/:id", async function (req, res, next) {
       where: { skills_id: id, user_id: user },
     });
 
-    console.log("skill", skill);
 
     if (skill.length > 0) {
       await Skills.destroy({
@@ -167,12 +167,15 @@ router.get("/", async function (req, res, next) {
         where: whereCondition,
       });
 
+      const IdEncrypt =  Encryption.encrypt(user.toString());
+
       res.json({
         meta: {
           totalRecords,
           currentPage: page,
           totalPages: Math.ceil(totalRecords / limit),
         },
+        public_profile: `${IdEncrypt}`,
         data: SkillsData,
       });
     } else {
@@ -187,5 +190,67 @@ router.get("/", async function (req, res, next) {
     next(error);
   }
 });
+
+
+
+// router.get("/:id", async function (req, res, next) {
+//   try {
+
+//     const { id } = req.params;
+//     const { is_active } = req.query;
+
+//     const page = parseInt(req.query.page, 10) || 1; // Default to page 1 if not specified
+//     const limit = parseInt(req.query.limit, 10) || 10; // Default to 10 items per page if not specified
+
+//     const offset = (page - 1) * limit;
+//     let user = id;
+
+//     if (user) {
+//       const whereCondition = {};
+
+//       if (is_active) {
+//         whereCondition.is_active = is_active;
+//       }
+
+//       const SkillsData = await Skills.findAll({
+//         where: whereCondition,
+//         include: [
+//           {
+//             model: User,
+//             as: "users",
+//           },
+//         ],
+//         order: [["created_at", "DESC"]],
+//         limit,
+//         offset,
+//       });
+
+//       const totalRecords = await Skills.count({
+//         where: whereCondition,
+//       });
+
+//       const IdEncrypt =  Encryption.encrypt(user.toString());
+
+//       res.json({
+//         meta: {
+//           totalRecords,
+//           currentPage: page,
+//           totalPages: Math.ceil(totalRecords / limit),
+//         },
+//         public_profile: `${IdEncrypt}`,
+//         data: SkillsData,
+//       });
+//     } else {
+//       res.status(404).json({
+//         status: 404,
+//         message: "ບໍມີລະຫັດຜູ້ໃຊ້ ໃນການຄົ້ນຫາຂໍ້ມູນ",
+//       });
+//     }
+
+//     // Calculate the offset
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 module.exports = router;

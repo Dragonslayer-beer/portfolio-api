@@ -21,4 +21,10 @@ router.use("/level", jwt.verify, levelAPI);
 const skillAPI = require("../app/controllers/api/Skills");
 router.use("/skill", jwt.verify, skillAPI);
 
+const projectAPI = require("../app/controllers/api/Project");
+router.use("/project", jwt.verify, projectAPI);
+
+const certificationAPI = require("../app/controllers/api/Certification");
+router.use("/certification", jwt.verify, certificationAPI);
+
 module.exports = router;
